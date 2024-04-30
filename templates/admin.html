@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            margin-bottom: 15px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="date"],
+        input[type="email"],
+        select,
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Page</h1>
+
+    <!-- Form to create a group -->
+    <h2>Create a Group</h2>
+    <form method="POST" action="/create_group">
+        <label for="group_name">Group Name:</label>
+        <input type="text" id="group_name" name="group_name" required>
+        <label for="expiry_date">Expiry Date:</label>
+        <input type="date" id="expiry_date" name="expiry_date">
+        <input type="submit" value="Create Group">
+    </form>
+
+    <!-- Form to create a user -->
+    <h2>Create a User</h2>
+    <form method="POST" action="/create_user">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="group">Select Group:</label>
+        <select id="group" name="group" required>
+            {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Create User">
+    </form>
+
+    <!-- List of Groups -->
+    <h2>Groups</h2>
+    <ul>
+        {% for group in groups %}
+            <li>
+                {{ group.name }}
+                <form method="POST" action="/delete_group/{{ group.id }}">
+                    <input type="submit" value="Delete Group">
+                </form>
+                <ul>
+                    <!-- List of Users in the Group -->
+                    {% for user in group.users %}
+                        <li>{{ user.username }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <!-- List of Users -->
+    <h2>Users</h2>
+    <ul>
+        {% for user in users %}
+            <li>
+                <a href="/user/{{ user.id }}">{{ user.username }}</a>
+                <!-- Add a link to the user details page -->
+                <form method="POST" action="/delete_user/{{ user.id }}">
+                    <input type="submit" value="Delete User">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Document</title>
+</head>
+
+<body>
+
+<link crossorigin="anonymous"
+      href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
+      integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" rel="stylesheet"/>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="static/style.css" media="screen" rel="stylesheet">
+
+{% for mesg in get_flashed_messages() %}
+<h1>{{ mesg }}</h1>
+{% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-lg-4 col-sm-6">
+                        </div>
+                        <div class="col-lg-8 col-sm-6">
+                            <div class="mt-4 mt-sm-0 d-flex align-items-center justify-content-sm-end">
+
+                                <div class="mb-2 me-2">
+                                    <div class="dropdown">
+                                        <button aria-expanded="false" aria-haspopup="true"
+                                                class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                                type="button">
+                                            <i class="mdi mdi-plus me-1"></i> Create New
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item" href="#"><i
+                                                    class="mdi mdi-folder-outline me-1"></i> Folder</a>
+                                            <a class="dropdown-item" href="#"><i
+                                                    class="mdi mdi-file-outline me-1"></i> File</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown mb-0">
+                                    <a aria-haspopup="true" class="btn btn-link text-muted dropdown-toggle p-1 mt-n2"
+                                       data-bs-toggle="dropdown" role="button">
+                                        <i class="mdi mdi-dots-vertical font-size-20"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" href="#">Share Files</a>
+                                        <a class="dropdown-item" href="#">Share with me</a>
+                                        <a class="dropdown-item" href="#">Other Actions</a>
+                                        <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="font-size-16 me-3 mb-0">Welcome, {{ user.username }}!</h5>
+
+                    {% for group_name, group_data in group_files.items() %}
+                    <h5 class="font-size-16 me-3 mb-0">Your Group: {{ group_name }}</h5>
+
+                    <h2>Files:</h2>
+                    <hr class="mt-2">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-nowrap table-hover mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Date uploaded</th>
+                                <th scope="col">Size</th>
+                                <th colspan="2" scope="col">Uploaded By</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            </thead>
+                            <h2>Files shared with group : {{ group_name }} id : {{ group_data['group_id'] }} </h2>
+                            <a class="btn btn-primary"
+                               href="{{ url_for('upload_file', group_id=group_data['group_id']) }}">UPLOAD</a>
+
+                            <tbody>
+                            {% for file in group_data['files'] %}
+                            <tr>
+                                <td>{{ file.name }}</td>
+                                <td>{{ file.date_of_upload }}</td>
+                                <td>{{ file.size }} KBs</td>
+                                <td>
+                                    <div class="avatar-group">
+                                        <div class="avatar-group-item">
+                                            <a>{{ file.uploaded_by_username }}</a>
+
+                                        </div>
+
+                                    </div>
+                                </td>
+                                <td>
+
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a aria-haspopup="true" class="font-size-16 text-muted"
+                                           data-bs-toggle="dropdown" role="button">
+                                            <i class="mdi mdi-dots-horizontal"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item" href="#">Open</a>
+                                            <a class="dropdown-item" href="#">Edit</a>
+                                            <a class="dropdown-item" href="#">Rename</a>
+                                            <a class="btn btn-primary"
+                                               href="{{ url_for('download_history', group_id=group_data['group_id'], file_id=file.id) }}">View
+                                                Download
+                                                History</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Remove</a>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+    </html>

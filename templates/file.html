@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download History</title>
+</head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        a {
+            text-decoration: none;
+            color: #4caf50;
+            display: block;
+            margin-top: 20px;
+        }
+        form {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+<body>
+    <h1>Download History for {{ file.name }}</h1>
+    <ul>
+        {% for download in download_history %}
+            <li>{{ download[0] }} - User ID: {{ download[1] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+
+    <!-- Add a download button for the current file -->
+    <form action="{{ url_for('download_file', group_id=group.id, file_id=file.id) }}" method="get">
+        <button type="submit" class="btn btn-primary">Download This File</button>
+    </form>
+</body>
+</html>

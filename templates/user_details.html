@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Details</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-bottom: 15px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        a {
+            text-decoration: none;
+            color: #4caf50;
+            margin-left: 10px;
+        }
+        form {
+            margin-top: 15px;
+        }
+        select,
+        input[type="submit"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Details</h1>
+    <h2>User Information</h2>
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+
+    <h2>Group Memberships</h2>
+    <ul>
+        {% for group in user.groups %}
+            <li>{{ group.name }} <a href="/remove_user_from_group/{{ user.id }}/{{ group.id }}">Remove</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Manage Group Memberships</h2>
+    <form method="POST" action="/add_user_to_group/{{ user.id }}">
+        <label for="group">Add to Group:</label>
+        <select id="group" name="group" required>
+            {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Add">
+    </form>
+
+    <h2>Delete User</h2>
+    <form method="POST" action="/delete_user/{{ user.id }}">
+        <input type="submit" value="Delete User (and their files)">
+    </form>
+</body>
+</html>
